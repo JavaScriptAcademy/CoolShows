@@ -2,51 +2,24 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { ReactiveDict } from 'meteor/reactive-dict';
 
-import { Tasks } from '../api/tasks.js';
-
-import './task.js';
+import {Concerts} from '../api/main.js';
+import './detail.js';
 import './body.html';
 
-Template.body.onCreated(function bodyOnCreated() {
+
+Template.AppBody.onCreated(function AppBodyOnCreated() {
   this.state = new ReactiveDict();
+  Meteor.subscribe("Concerts");
 });
 
-Template.body.helpers({
-  tasks() {
-    const instance = Template.instance();
-    if (instance.state.get('hideCompleted')) {
-      // If hide completed is checked, filter tasks
-      return Tasks.find({ checked: { $ne: true } }, { sort: { createdAt: -1 } });
+Template.AppBody.helpers({
+    concerts() {
+      console.log(Concerts.find({}).fetch());
+      return Concerts.find({}).fetch();
+      // Meteor.call('concerts.findAll');
     }
-    // Otherwise, return all of the tasks
-    return Tasks.find({}, { sort: { createdAt: -1 } });
-  },
-  incompleteCount() {
-  return Tasks.find({ checked: { $ne: true } }).count();
-  },
 });
 
-Template.body.events({
-  'submit .new-task'(event) {
-    // Prevent default browser form submit
-    event.preventDefault();
+Template.AppBody.events({
 
-    // Get value from form element
-    const target = event.target;
-    const text = target.text.value;
-
-    // Insert a task into the collection
-    Tasks.insert({
-      text,
-      createdAt: new Date(), // current time
-      owner: Meteor.userId(),
-      username: Meteor.user().username,
-    });
-
-    // Clear form
-    target.text.value = '';
-  },
-  'change .hide-completed input'(event, instance) {
-    instance.state.set('hideCompleted', event.target.checked);
-  },
 });

@@ -1,0 +1,86 @@
+<template name="AppDetail">
+
+  <h2>{{concert.name}}</h2>
+  <div class="row">
+    <div class="col-md-3">
+      <img src="/{{concert.image}}" class="img-thumbnail" style="width:190px; height:220px ">
+    </div>
+    <div class="col-md-9">
+      <h3>{{concert.time}}</h3>
+      <h5>{{concert.location}}</h5>
+
+      <table class="table table-condensed">
+       <!--  <th>
+          <td>Cost</td>
+          <td>Quantity</td>
+          <td>Remaining</td>
+          <td>Order</td>
+        </th> -->
+        <tr>
+          <td>${{concert.price}}</td>
+          <td>
+            <select id="slctv">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </td>
+          <td> <strong>{{concert.number}}</strong> left</td>
+          <td>
+            <button id="btnOrder" class="btn btn-primary">Order</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="clear"></div>
+
+  <div class="row">
+    <br>
+    <hr style="width: 90%; text-color:#7ffffd"><br>
+  </div>
+
+  <div class="clear"></div>
+
+  {{> AppComments}}
+</template>
+
+<template name="AppComments">
+  <div class="row" style="margin-bottom:20px">
+    <div class="clear"></div>
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-10">
+      <h2>Comments</h2>
+
+      {{#if currentUser}}
+        <form class="new-task">
+          <input type="text" name="text" placeholder="Type to add your comments" />
+          <button type='submit' class="btn btn-primary">Submit</button>
+        </form>
+      {{/if}}
+
+      <ul>
+      {{#each comments}}
+      <!-- <li>
+        <span class="text"><strong>{{username}}</strong> - {{comment}}</span>
+      </li> -->
+        {{> myComment}}
+      {{/each}}
+      </ul>
+    </div>
+    <div class="col-md-1">
+    </div>
+    <div class="clear"></div>
+  </div>
+</template>
+
+<template name="myComment">
+  <li>
+    <span class="text"><strong>{{username}}</strong> - {{comment}}</span>
+  </li>
+</template>
+

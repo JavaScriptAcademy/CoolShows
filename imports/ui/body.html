@@ -1,27 +1,22 @@
-<body>
-  <div class="container">
-    <header>
-      <h1>Todo List({{incompleteCount}})</h1>
+<template name="AppBody">
 
-      <label class="hide-completed">
-        <input type="checkbox" />
-        Hide Completed Tasks
-      </label>
+  <hr>
 
-      {{> loginButtons}}
+    {{#each concerts}}
+      {{> concert}}
+    {{/each}}
 
-      {{#if currentUser}}
-        <form class="new-task">
-          <input type="text" name="text" placeholder="Type to add new tasks" />
-        </form>
-      {{/if}}
-    </header>
+</template>
 
-    <ul>
-      {{#each tasks}}
-        {{> task}}
-      {{/each}}
-    </ul>
-  </div>
-</body>
+<template name='concert'>
 
+    <div class="eachconcert">
+      <a href="/concerts/{{_id}}">
+      <p>{{name}}</p>
+      <p>{{location}}</p>
+      <img src="{{image}}" style="width:190px; height:220px ">
+      <p>{{time}}</p>
+      </a>
+    </div>
+
+</template>
