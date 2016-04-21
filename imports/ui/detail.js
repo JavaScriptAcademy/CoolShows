@@ -7,18 +7,22 @@ import { Concerts } from '../api/main.js';
 
 import './detail.html';
 
-
-Template.AppDetail.helpers({
-  concert() {
-    console.log(this.id);
-    return Concerts.findOne({_id : this.id});
-  },
-});
-
 Template.AppDetail.onCreated(function AppDetailOnCreated() {
   this.state = new ReactiveVar();
   Meteor.subscribe('Concerts');
 
+});
+
+
+
+Template.AppDetail.helpers({
+  concert() {
+
+    return Concerts.findOne({_id : this.id});
+  },
+  comments() {
+    return Concerts.findOne({_id : this.id}).comments;
+  },
 });
 
 
@@ -57,35 +61,21 @@ Template.AppDetail.events({
         })
     }
   },
-});
-
-Template.AppComments.helpers({
-  comments() {
-    return Concerts.find({}, { sort: { createdAt: -1 } });
-  },
-});
-
-Template.AppComments.onCreated(function AppCommentsOnCreated() {
-  this.state = new ReactiveVar();
-  Meteor.subscribe('Concerts');
-
-});
-
-
-
-Template.AppComments.events({
   'submit .new-task'(event) {
     // Prevent default browser form submit
     event.preventDefault();
 
-    const target = event.target;
-    const comment  = target[0].value;
-
+    var target = event.target;
+    var text  = target[0].value;
+    var comment = {
+      username : Meteor.user().username,
+      comment : text,
+      time : new Date()
+    };
     // Insert a task into the collection
-    Meteor.call('concerts.insert',comment);
+    Meteor.call('concerts.insertcomments', this.id, comment);
 
     // Clear form
     target[0].value = '';
   },
 });
-

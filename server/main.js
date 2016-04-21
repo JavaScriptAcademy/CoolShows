@@ -9,8 +9,8 @@ var concerts = [
         time : "2016-03-22 10:00:00",
         price : 280,
         number : 20,
-        image : "book2.jpg",
-        comments : [{username : 'hexinlai', comment : 'good', time : '2016-03-22 11:00:00'}]
+        image : "book1.jpg",
+        comments : [{username : 'xiaoming', comment : 'good', time : '2016-03-22 11:00:00'}]
       },
       {
         name : 'Guitar Concert',
@@ -18,8 +18,8 @@ var concerts = [
         time : "2016-03-22 11:00:00",
         price : 180,
         number : 30,
-        image : "book3.jpg",
-        comments : [{username : 'hexinlai', comment : 'good', time : '2016-03-22 11:00:00'}]
+        image : "book2.jpg",
+        comments : [{username : 'xiaohong', comment : 'good', time : '2016-03-22 11:00:00'}]
       },
       {
         name : 'Drum Concert',
@@ -27,8 +27,8 @@ var concerts = [
         time : "2016-03-22 12:00:00",
         price : 380,
         number : 40,
-        image : "book4.jpg",
-        comments : [{username : 'hexinlai', comment : 'good', time : '2016-03-22 11:00:00'}]
+        image : "book3.jpg",
+        comments : [{username : 'xiaofang', comment : 'good', time : '2016-03-22 11:00:00'}]
       },
       {
         name : 'Erhu Concert',
@@ -36,8 +36,8 @@ var concerts = [
         time : "2016-03-22 13:00:00",
         price : 680,
         number : 50,
-        image : "book5.jpg",
-        comments : [{username : 'hexinlai', comment : 'good', time : '2016-03-22 11:00:00'}]
+        image : "book4.jpg",
+        comments : [{username : 'xiaoli', comment : 'good', time : '2016-03-22 11:00:00'}]
       }
     ];
 
@@ -51,7 +51,8 @@ Meteor.startup(() => {
         time : concert.time,
         price : concert.price,
         image : concert.image,
-        number : concert.number
+        number : concert.number,
+        comments : concert.comments
       });
     });
   };
@@ -78,15 +79,11 @@ Meteor.methods({
       console.log("findAll*************************** ", concerts);
       return concerts;
   },
-  'concerts.insert'(comment){
-      let concerts = Concerts.insert(
-        {
-          comment:comment,
-          createdAt: new Date(), // current time
-          owner: Meteor.userId(),
-          username: Meteor.user().username,
-        });
-      console.log("insert************** ", concerts);
-      return concerts;
-  }
+  'concerts.insertcomments'(id, comment){
+      let update = {};
+      let origin_comments = Concerts.findOne({_id : id}).comments;
+      origin_comments.unshift(comment);
+      update.comments = origin_comments;
+      Concerts.update({_id : id}, {$set : update});
+  },
 })

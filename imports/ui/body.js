@@ -14,7 +14,7 @@ Template.AppBody.onCreated(function AppBodyOnCreated() {
 
 Template.AppBody.helpers({
     concerts() {
-      console.log(Concerts.find({}).fetch());
+
       return Concerts.find({}).fetch();
       // Meteor.call('concerts.findAll');
     }

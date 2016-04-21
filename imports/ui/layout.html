@@ -1,7 +1,6 @@
 <template name="layout">
 
-  <div class="container">
-    <header>
+    <header align='center'>
       <h1>Welcome to Cool Shows!</h1>
       <!-- <h1>Todo List({{incompleteCount}})</h1> -->
 
@@ -18,8 +17,7 @@
         </form>
       {{/if}} -->
     </header>
-
-    {{> yield}}
-
-  </div>
+    <div class="container">
+      {{> yield}}
+    </div>
 </template>
